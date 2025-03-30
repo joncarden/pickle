@@ -144,14 +144,23 @@ const adjustScheduleBasedOnQuestionnaire = (schedule, responses, now) => {
       
       // Add potty break after meal
       const postMealPotty = addMinutes(mealTime, 30);
-      adjustedSchedule.push({
-        time: format(postMealPotty, 'h:mm a'),
-        rawTime: postMealPotty,
-        title: 'Potty Break (after meal)',
-        type: ACTIVITY_TYPES.POTTY,
-        completed: false,
-        isNext: false
-      });
+      
+      // Check if we already have a potty break around this time (within 15 min)
+      const hasPottyBreakNearby = adjustedSchedule.some(item => 
+        item.type === ACTIVITY_TYPES.POTTY && 
+        Math.abs(item.rawTime - postMealPotty) < 15 * 60 * 1000
+      );
+      
+      if (!hasPottyBreakNearby) {
+        adjustedSchedule.push({
+          time: format(postMealPotty, 'h:mm a'),
+          rawTime: postMealPotty,
+          title: 'Potty Break (after meal)',
+          type: ACTIVITY_TYPES.POTTY,
+          completed: false,
+          isNext: false
+        });
+      }
       
       // Re-sort the schedule
       adjustedSchedule.sort((a, b) => a.rawTime - b.rawTime);
@@ -323,7 +332,7 @@ const generateScheduleFromTemplate = (template, responses, now) => {
     schedule.push({
       time: format(playTime, 'h:mm a'),
       rawTime: new Date(playTime),
-      title: responses.energy === 'high' ? 'Play Session' : 'Training Session (5-10 min)',
+      title: 'Supervised play',
       type: responses.energy === 'high' ? ACTIVITY_TYPES.PLAY : ACTIVITY_TYPES.TRAINING,
       completed: false,
       isNext: false
@@ -354,9 +363,9 @@ const generateScheduleFromTemplate = (template, responses, now) => {
       
       // Alternate between rest, play, and training
       const activities = [
-        { title: 'Play Session', type: ACTIVITY_TYPES.PLAY },
-        { title: 'Training Session (5-10 min)', type: ACTIVITY_TYPES.TRAINING },
-        { title: 'Family Time', type: ACTIVITY_TYPES.PLAY }
+        { title: 'Supervised play', type: ACTIVITY_TYPES.PLAY },
+        { title: 'Supervised play', type: ACTIVITY_TYPES.TRAINING },
+        { title: 'Supervised play', type: ACTIVITY_TYPES.PLAY }
       ];
       
       const activity = activities[schedule.length % activities.length];

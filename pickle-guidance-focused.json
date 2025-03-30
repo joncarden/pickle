@@ -6,6 +6,85 @@
     "methodology": "Will Atherton positive reinforcement approach"
   },
   
+  "methodologyPrinciples": {
+    "handFeeding": {
+      "purpose": "Build engagement, relationship and create value for training",
+      "implementation": [
+        "Use meals as training opportunities (especially breakfast and dinner)",
+        "Feed kibble piece by piece for desired behaviors",
+        "Gradually transition from continuous to intermittent reinforcement",
+        "Maintain hand feeding portion even as puppy grows",
+        "Use meal time to teach impulse control and calm behavior"
+      ]
+    },
+    "calmness": {
+      "purpose": "Develop a puppy who can self-regulate and settle",
+      "implementation": [
+        "Reward calm behavior from day one",
+        "Practice 'passive training' - reward spontaneous calm moments",
+        "Use structured relaxation protocol daily",
+        "Create clear distinctions between play time and calm time",
+        "Never reward excitement, jumping or demanding behaviors",
+        "Teach settle on a specific mat or place"
+      ]
+    },
+    "structure": {
+      "purpose": "Create clear boundaries and expectations",
+      "implementation": [
+        "Maintain consistent daily schedule",
+        "Use consistent verbal cues and hand signals",
+        "Practice brief training sessions multiple times daily",
+        "End all interactions on success",
+        "Create clear thresholds (doorways, entering/exiting crate)",
+        "Establish predictable patterns for key activities"
+      ]
+    },
+    "engagement": {
+      "purpose": "Build relationship and focus to enable effective training",
+      "implementation": [
+        "Use movement and enthusiasm to build interest",
+        "Work in short bursts with high success rate",
+        "Incorporate play into training",
+        "Build value for eye contact and name recognition",
+        "Create motivation rather than relying on bribery",
+        "Be more interesting than distractions"
+      ]
+    },
+    "environmentalManagement": {
+      "purpose": "Prevent unwanted behaviors and set up for success",
+      "implementation": [
+        "Use appropriate confinement (crate, playpen) when not supervising",
+        "Puppy-proof accessible areas completely",
+        "Gradually expand freedom as reliability increases",
+        "Manage exposure to distractions based on training level",
+        "Control excitement levels in the environment",
+        "Provide appropriate outlet for natural behaviors"
+      ]
+    },
+    "socialization": {
+      "purpose": "Create confident, well-adjusted dog without overwhelming",
+      "implementation": [
+        "Focus on quality over quantity of exposures",
+        "Ensure puppy is calm before exposure to new things",
+        "Practice 'look but don't touch' with novel stimuli",
+        "Monitor body language and emotional state during exposure",
+        "Create positive associations with neutral experiences",
+        "Never force interactions - allow choice and agency"
+      ]
+    },
+    "trainingProgression": {
+      "purpose": "Build reliable behaviors systematically",
+      "implementation": [
+        "Master behaviors in quiet environments before adding distractions",
+        "Add the 3 D's gradually: Duration, Distance, Distraction",
+        "Keep sessions short but frequent (5-10 sessions of 1-3 minutes daily)",
+        "Balance obedience training with life skills (handling, calmness)",
+        "Use marker word ('yes') consistently to identify desired behavior",
+        "Create structured training plans with clear criteria for each step"
+      ]
+    }
+  },
+  
   "ages": {
     "10-12": {
       "feeding": {
@@ -129,7 +208,53 @@
             ]
           }
         ]
-      }
+      },
+      
+      "dailySchedule": [
+        {"time": "6:00 AM", "activity": "Wake up & immediate potty break", "duration": "5 min", "notes": "Keep boring, just for elimination; establish consistent routine"},
+        {"time": "6:15 AM", "activity": "Free play in supervised area", "duration": "15 min", "notes": "Gentle play to burn morning energy while avoiding over-arousal"},
+        {"time": "6:30 AM", "activity": "Morning meal (hand-fed)", "duration": "15-20 min", "notes": "Use as mini training session with kibble; practice sits and eye contact"},
+        {"time": "6:50 AM", "activity": "Potty break", "duration": "5 min", "notes": "Always follow meals with potty break; use consistent cue word"},
+        {"time": "7:00 AM", "activity": "Structured training", "duration": "10 min", "notes": "Short, focused training with remaining breakfast kibble; high success rate"},
+        {"time": "7:10 AM", "activity": "Relaxation protocol practice", "duration": "5 min", "notes": "Will Atherton's 'calm settle' practice on a mat"},
+        {"time": "7:15 AM", "activity": "Supervised free time", "duration": "30 min", "notes": "Monitor closely for potty signals; interrupt undesirable behaviors"},
+        {"time": "7:45 AM", "activity": "Potty break", "duration": "5 min", "notes": "Proactive hourly break; praise calmly for success"},
+        {"time": "7:50 AM", "activity": "Crate time with appropriate toy", "duration": "30-60 min", "notes": "Morning nap; build positive crate association; use calm energy when crating"},
+        {"time": "8:50 AM", "activity": "Potty break", "duration": "5 min", "notes": "Immediately after waking from nap; maintain consistency"},
+        {"time": "9:00 AM", "activity": "Socialization/enrichment", "duration": "20-30 min", "notes": "Controlled exposure to new stimulus; focus on quality over quantity"},
+        {"time": "9:30 AM", "activity": "Potty break", "duration": "5 min", "notes": "Proactive break; establish elimination locations"},
+        {"time": "9:35 AM", "activity": "Crate time with frozen Kong", "duration": "60-90 min", "notes": "Mid-morning nap; begin building duration; practice departures"},
+        {"time": "11:05 AM", "activity": "Potty break", "duration": "5 min", "notes": "Immediately after waking from nap"},
+        {"time": "11:15 AM", "activity": "Leash skills practice", "duration": "10 min", "notes": "Gentle introduction to collar pressure; reward loose leash position"},
+        {"time": "11:25 AM", "activity": "Supervised free time", "duration": "30-45 min", "notes": "Monitor closely for potty signals; practice interruption-free attention"},
+        {"time": "12:00 PM", "activity": "Midday meal (partial hand-fed)", "duration": "15 min", "notes": "Continue reinforcing calm behavior around food"},
+        {"time": "12:15 PM", "activity": "Potty break", "duration": "5 min", "notes": "Always follow meals with potty break"},
+        {"time": "12:25 PM", "activity": "Gentle physical play", "duration": "15 min", "notes": "Structured play with clear start/end signals; teach impulse control"},
+        {"time": "12:40 PM", "activity": "Training session", "duration": "5-10 min", "notes": "Focus on one skill; high rate of reinforcement; end on success"},
+        {"time": "12:50 PM", "activity": "Potty break", "duration": "5 min", "notes": "After play session"},
+        {"time": "12:55 PM", "activity": "Crate time with chew toy", "duration": "60-120 min", "notes": "Afternoon nap; close crate door; practice being calm while alone"},
+        {"time": "2:55 PM", "activity": "Potty break", "duration": "5 min", "notes": "Immediately after waking from nap"},
+        {"time": "3:05 PM", "activity": "Training session", "duration": "10 min", "notes": "Short, positive training focusing on engagement and relationship"},
+        {"time": "3:15 PM", "activity": "Environmental enrichment", "duration": "15-20 min", "notes": "New textures, surfaces, sounds; build environmental confidence"},
+        {"time": "3:35 PM", "activity": "Supervised free time", "duration": "30-45 min", "notes": "Practice 'place' command intermittently during free time"},
+        {"time": "4:20 PM", "activity": "Potty break", "duration": "5 min", "notes": "Proactive hourly break"},
+        {"time": "4:25 PM", "activity": "Scent games/mental stimulation", "duration": "15 min", "notes": "Hide treats/toys for searching; develop problem-solving skills"},
+        {"time": "4:40 PM", "activity": "Crate time with toy", "duration": "45-60 min", "notes": "Late afternoon nap; build duration gradually"},
+        {"time": "5:40 PM", "activity": "Potty break", "duration": "5 min", "notes": "Immediately after waking from nap"},
+        {"time": "5:50 PM", "activity": "Interactive play", "duration": "15-20 min", "notes": "Structured game with rules; reinforce self-control"},
+        {"time": "6:10 PM", "activity": "Handling exercises", "duration": "5-10 min", "notes": "Practice touching paws, ears, mouth with positive association"},
+        {"time": "6:20 PM", "activity": "Evening meal (hand-fed)", "duration": "15-20 min", "notes": "Use as training opportunity; build food manners"},
+        {"time": "6:40 PM", "activity": "Potty break", "duration": "5 min", "notes": "Always follow meals with potty break"},
+        {"time": "6:45 PM", "activity": "Family time/supervised free time", "duration": "60 min", "notes": "Integrate with family activities, monitor for potty signals"},
+        {"time": "7:45 PM", "activity": "Potty break", "duration": "5 min", "notes": "Proactive hourly break"},
+        {"time": "7:50 PM", "activity": "Calm activities", "duration": "30-40 min", "notes": "Begin winding down for evening; practice massage, gentle petting"},
+        {"time": "8:30 PM", "activity": "Potty break", "duration": "5 min", "notes": "Evening elimination"},
+        {"time": "8:35 PM", "activity": "Settle time", "duration": "20-25 min", "notes": "Quiet time with family, minimal excitement; practice calm behavior"},
+        {"time": "9:00 PM", "activity": "Final potty break", "duration": "5 min", "notes": "Final elimination before bed; use calm energy"},
+        {"time": "9:10 PM", "activity": "Bedtime crating", "duration": "Until morning (~9 hours)", "notes": "Use bedtime-only treat, expect 1-2 overnight potty breaks"},
+        {"time": "1:00 AM", "activity": "Overnight potty break", "duration": "5 min", "notes": "Keep boring, minimal interaction, no play; maintain consistency"},
+        {"time": "4:00 AM", "activity": "Overnight potty break", "duration": "5 min", "notes": "Keep boring, minimal interaction, no play; prepare for return to crate"}
+      ]
     },
     
     "13-16": {
@@ -244,371 +369,46 @@
             ]
           }
         ]
-      }
-    },
-    
-    "17-20": {
-      "feeding": {
-        "dailyAmount": "3.5-4.5 cups of high-quality puppy food (specific to large breeds)",
-        "schedule": "2 meals per day (morning and evening)",
-        "method": "Regular meals in bowl, portion for training",
-        "tips": [
-          "Weight gain should be steady but moderate (1-2 pounds per week)",
-          "Monitor body condition score - ribs should be easily felt but not visible",
-          "Continue using portion of meals for training",
-          "Expected weight: 31-40 pounds"
-        ]
       },
       
-      "crate": {
-        "keyFocus": [
-          "Normalizing longer crate periods",
-          "Creating settled behavior in crate",
-          "Reducing dependency on rewards"
-        ],
-        "techniques": [
-          {
-            "title": "Extended Duration",
-            "steps": [
-              "Build toward 3-4 hour comfort in crate",
-              "Practice \"settle\" command inside crate",
-              "Begin leaving home for short periods with Pickle crated",
-              "Establish solid nap routine in crate"
-            ]
-          },
-          {
-            "title": "Reward Evolution",
-            "steps": [
-              "Transition to primarily verbal praise",
-              "Randomize tangible rewards (treats/toys)",
-              "Practice no-reward exits (matter-of-fact approach)",
-              "Reward calm behavior, not just entry/exit"
-            ]
-          },
-          {
-            "title": "Independence Building",
-            "steps": [
-              "Create positive association with your departure routines",
-              "Practice \"fake departures\" - grab keys, coat, but return immediately",
-              "Gradually extend alone time in crate (5 min → 15 → 30 → 60)",
-              "Video monitor to assess behavior when alone"
-            ]
-          },
-          {
-            "title": "Troubleshooting",
-            "steps": [
-              "For separation anxiety, consult professional trainer",
-              "If regression occurs, temporarily increase exercise before crating",
-              "Never punish anxiety behaviors"
-            ]
-          }
-        ]
-      },
-      
-      "potty": {
-        "keyFocus": [
-          "Establishing reliable communication",
-          "Building duration between breaks",
-          "Generalizing to different environments"
-        ],
-        "techniques": [
-          {
-            "title": "Duration Mastery",
-            "steps": [
-              "Work toward 3-4 hour reliability between breaks",
-              "Maintain proactive breaks after triggers (play, excitement)",
-              "Begin tracking natural elimination schedule"
-            ]
-          },
-          {
-            "title": "Communication Refinement",
-            "steps": [
-              "Ensure Pickle has reliable way to request potty access",
-              "Respond consistently to signals",
-              "Begin distinguishing urgent vs. non-urgent signals"
-            ]
-          },
-          {
-            "title": "Environmental Generalization",
-            "steps": [
-              "Practice potty cues in different locations",
-              "Establish potty routine for visits to other homes/places",
-              "Practice with different walking surfaces (grass, concrete, gravel)"
-            ]
-          },
-          {
-            "title": "Nighttime Independence",
-            "steps": [
-              "Most puppies can make it through night by this age",
-              "Transition to more typical morning potty time"
-            ]
-          },
-          {
-            "title": "Troubleshooting",
-            "steps": [
-              "Address marking behaviors immediately",
-              "For excitement urination, keep greetings calm and low-key",
-              "Temporary regression normal during this period - stay consistent"
-            ]
-          }
+      "dailySchedule": {
+        "weekday": [
+          {"time": "6:00 AM", "activity": "Wake up & immediate potty break", "duration": "5-10 min", "notes": "Begin using potty signal training (bell/gesture)"},
+          {"time": "6:15 AM", "activity": "Free play/exercise", "duration": "20-30 min", "notes": "More active play as energy increases"},
+          {"time": "6:45 AM", "activity": "Morning meal (partial hand-fed)", "duration": "15-20 min", "notes": "Use portion for training, remainder in bowl"},
+          {"time": "7:05 AM", "activity": "Potty break", "duration": "5-10 min", "notes": "Practice potty signal before going out"},
+          {"time": "7:15 AM", "activity": "Supervised play", "duration": "15-20 min", "notes": "Focus on basic obedience with breakfast kibble"},
+          {"time": "7:35 AM", "activity": "Supervised free time", "duration": "25-30 min", "notes": "Begin introducing short periods of less intense supervision"},
+          {"time": "8:05 AM", "activity": "Potty break", "duration": "5 min", "notes": "Practice potty signal consistently"},
+          {"time": "8:10 AM", "activity": "Crate time with enrichment toy", "duration": "60-90 min", "notes": "Morning nap; intermittent reward schedule"},
+          {"time": "9:40 AM", "activity": "Potty break", "duration": "5-10 min", "notes": "Immediately after crate time"},
+          {"time": "9:50 AM", "activity": "Socialization/enrichment", "duration": "30-45 min", "notes": "More challenging exposure experiences"},
+          {"time": "10:35 AM", "activity": "Potty break", "duration": "5 min", "notes": "After activity session"},
+          {"time": "10:40 AM", "activity": "Supervised free time", "duration": "50-60 min", "notes": "Monitor less intensely but remain available"},
+          {"time": "11:40 AM", "activity": "Potty break", "duration": "5 min", "notes": "Proactive break at 2-3 hour interval"},
+          {"time": "11:45 AM", "activity": "Midday meal (bowl fed)", "duration": "15 min", "notes": "Begin transitioning to 2 meals daily by 16 weeks"},
+          {"time": "12:00 PM", "activity": "Potty break", "duration": "5-10 min", "notes": "Always follow meals with potty break"},
+          {"time": "12:10 PM", "activity": "Supervised play", "duration": "15-20 min", "notes": "Increase challenge level of training exercises"},
+          {"time": "12:30 PM", "activity": "Interactive play", "duration": "20-30 min", "notes": "More energetic play as physical ability increases"},
+          {"time": "1:00 PM", "activity": "Potty break", "duration": "5 min", "notes": "After play/exercise session"},
+          {"time": "1:05 PM", "activity": "Crate time with long-lasting chew", "duration": "90-120 min", "notes": "Afternoon nap; build duration with special toys"},
+          {"time": "3:05 PM", "activity": "Potty break", "duration": "5-10 min", "notes": "Immediately after crate time"},
+          {"time": "3:15 PM", "activity": "Supervised play", "duration": "15-20 min", "notes": "Focus on leash skills and impulse control"},
+          {"time": "3:35 PM", "activity": "Supervised free time", "duration": "55-65 min", "notes": "Begin brief moments of out-of-sight supervision"},
+          {"time": "4:40 PM", "activity": "Potty break", "duration": "5 min", "notes": "Proactive break at 2-3 hour interval"},
+          {"time": "4:45 PM", "activity": "Environmental enrichment", "duration": "30-40 min", "notes": "Introduce more challenging puzzle toys, new environments"},
+          {"time": "5:25 PM", "activity": "Crate time or settle practice", "duration": "45-60 min", "notes": "Begin practicing settle outside crate occasionally"},
+          {"time": "6:25 PM", "activity": "Potty break", "duration": "5-10 min", "notes": "After rest period"},
+          {"time": "6:35 PM", "activity": "Evening meal (partial hand-fed)", "duration": "15-20 min", "notes": "Use portion for training, remainder in bowl"},
+          {"time": "6:55 PM", "activity": "Potty break", "duration": "5-10 min", "notes": "Always follow meals with potty break"},
+          {"time": "7:05 PM", "activity": "Supervised play", "duration": "60-90 min", "notes": "Integrate with family activities, begin teaching settle in active environment"},
+          {"time": "8:35 PM", "activity": "Potty break", "duration": "5 min", "notes": "Evening elimination"},
+          {"time": "8:40 PM", "activity": "Calm activities", "duration": "40-50 min", "notes": "Focus on relaxation, gentle massage, quiet time"},
+          {"time": "9:30 PM", "activity": "Final potty break", "duration": "5-10 min", "notes": "Final elimination before bed"},
+          {"time": "9:40 PM", "activity": "Bedtime crating", "duration": "Until morning (8-9 hours)", "notes": "Begin phasing out one overnight break if consistently dry"},
+          {"time": "2:40 AM", "activity": "Optional overnight potty break", "duration": "5 min", "notes": "Only if needed based on bladder development"}
         ]
       }
-    },
-    
-    "21-26": {
-      "feeding": {
-        "dailyAmount": "4-5 cups of high-quality puppy food (specific to large breeds)",
-        "schedule": "2 meals per day (morning and evening)",
-        "method": "Regular meals in bowl, portion for training",
-        "tips": [
-          "Begin considering transition to adult food at 6 months (consult vet)",
-          "Expected weight: 41-50 pounds",
-          "Adjust portions based on activity level and growth rate",
-          "Continue to monitor body condition - should have visible waist when viewed from above"
-        ]
-      },
-      
-      "crate": {
-        "keyFocus": [
-          "Maintaining established patterns",
-          "Full comfort with longer durations",
-          "Balancing crate with increased freedom"
-        ],
-        "techniques": [
-          {
-            "title": "Maintenance Strategy",
-            "steps": [
-              "Continue daily crate periods even as house freedom increases",
-              "Maintain predictable crate schedule",
-              "Ensure crate remains positive space"
-            ]
-          },
-          {
-            "title": "Duration Mastery",
-            "steps": [
-              "Practice occasional 4-5 hour periods in crate",
-              "Maintain matter-of-fact approach to entry/exit",
-              "Video monitor for signs of stress during longer periods"
-            ]
-          },
-          {
-            "title": "Freedom Balance",
-            "steps": [
-              "Begin testing short periods (15-30 min) of house freedom",
-              "Gradually extend freedom periods as Pickle demonstrates reliability",
-              "Continue using crate for nighttime and when unsupervised"
-            ]
-          },
-          {
-            "title": "Troubleshooting",
-            "steps": [
-              "If destruction occurs during freedom, increase crate time and exercise",
-              "Reinforce crate training if signs of regression appear",
-              "Ensure crate size remains appropriate as Pickle grows"
-            ]
-          }
-        ]
-      },
-      
-      "potty": {
-        "keyFocus": [
-          "Maintaining reliability",
-          "Weather adaptation",
-          "Full communication system"
-        ],
-        "techniques": [
-          {
-            "title": "Reliability Reinforcement",
-            "steps": [
-              "4-6 hour reliability between breaks",
-              "Maintain consistent praise for outdoor elimination",
-              "Fade treats to occasional reinforcement"
-            ]
-          },
-          {
-            "title": "Weather Adaptation",
-            "steps": [
-              "Train for potty in all weather conditions",
-              "Create solutions for adverse weather (covered areas)",
-              "Maintain expectations despite weather"
-            ]
-          },
-          {
-            "title": "Schedule Normalization",
-            "steps": [
-              "Establish adult-like potty schedule",
-              "Morning, after meals, evening, before bed",
-              "Respond consistently to Pickle's signals between scheduled times"
-            ]
-          },
-          {
-            "title": "Troubleshooting",
-            "steps": [
-              "Regression common during adolescence - stay consistent",
-              "For weather resistance, create more appealing outdoor experience",
-              "Consider temporary belly band for male dogs if marking begins"
-            ]
-          }
-        ]
-      }
-    }
-  },
-  
-  "scheduleTemplates": {
-    "10-12": {
-      "wakingHours": 6,
-      "sleepHours": 18,
-      "pottyFrequency": 1,
-      "mealTimes": ["7:00 AM", "12:00 PM", "6:00 PM"],
-      "activities": [
-        {
-          "type": "potty",
-          "duration": 5,
-          "frequency": "hourly",
-          "tips": [
-            "Use consistent potty area",
-            "Give treat immediately after success",
-            "Use 'go potty' cue word during elimination"
-          ]
-        },
-        {
-          "type": "feeding",
-          "duration": 15,
-          "frequency": "3x daily",
-          "tips": [
-            "Hand-feed at least one meal",
-            "Use meal kibble for training",
-            "Keep mealtimes consistent"
-          ]
-        },
-        {
-          "type": "crate",
-          "duration": 60,
-          "frequency": "multiple times daily",
-          "tips": [
-            "Use high-value treats for entry",
-            "Never force into crate",
-            "Keep crate experiences positive"
-          ]
-        }
-      ]
-    },
-    
-    "13-16": {
-      "wakingHours": 8,
-      "sleepHours": 16,
-      "pottyFrequency": 2,
-      "mealTimes": ["7:00 AM", "12:00 PM", "6:00 PM"],
-      "activities": [
-        {
-          "type": "potty",
-          "duration": 5,
-          "frequency": "every 2-3 hours",
-          "tips": [
-            "Begin potty signal training",
-            "Track natural elimination patterns",
-            "Maintain consistent schedule"
-          ]
-        },
-        {
-          "type": "feeding",
-          "duration": 15,
-          "frequency": "3x daily, transition to 2x by 16 weeks",
-          "tips": [
-            "Transition to 2 meals around 14-15 weeks",
-            "Continue hand-feeding portions",
-            "Monitor weight gain (steady not rapid)"
-          ]
-        },
-        {
-          "type": "crate",
-          "duration": 120,
-          "frequency": "several times daily",
-          "tips": [
-            "Build to 1-2 hour comfort periods",
-            "Begin reducing constant treats",
-            "Use special crate-only toys"
-          ]
-        }
-      ]
-    },
-    
-    "17-20": {
-      "wakingHours": 8,
-      "sleepHours": 16,
-      "pottyFrequency": 3,
-      "mealTimes": ["7:00 AM", "6:00 PM"],
-      "activities": [
-        {
-          "type": "potty",
-          "duration": 5,
-          "frequency": "every 3-4 hours",
-          "tips": [
-            "Ensure reliable communication system",
-            "Begin practicing in different locations",
-            "Maintain consistency with signals"
-          ]
-        },
-        {
-          "type": "feeding",
-          "duration": 15,
-          "frequency": "2x daily",
-          "tips": [
-            "Monitor body condition regularly",
-            "Adjust portions based on activity level",
-            "Continue using portion for training"
-          ]
-        },
-        {
-          "type": "crate",
-          "duration": 180,
-          "frequency": "2-3 times daily",
-          "tips": [
-            "Build toward 3-4 hour comfort",
-            "Practice departures with crating",
-            "Maintain predictable schedule"
-          ]
-        }
-      ]
-    },
-    
-    "21-26": {
-      "wakingHours": 10,
-      "sleepHours": 14,
-      "pottyFrequency": 4,
-      "mealTimes": ["7:00 AM", "6:00 PM"],
-      "activities": [
-        {
-          "type": "potty",
-          "duration": 5,
-          "frequency": "every 4-6 hours",
-          "tips": [
-            "Maintain adult-like schedule",
-            "Practice in different weather conditions",
-            "Begin fading constant rewards"
-          ]
-        },
-        {
-          "type": "feeding",
-          "duration": 15,
-          "frequency": "2x daily",
-          "tips": [
-            "Consider transition to adult food at 6 months",
-            "Adjust portions as growth rate slows",
-            "Monitor body condition regularly"
-          ]
-        },
-        {
-          "type": "crate",
-          "duration": 240,
-          "frequency": "as needed + overnight",
-          "tips": [
-            "Balance with increased house freedom",
-            "Maintain positive crate association",
-            "Continue using for unsupervised times"
-          ]
-        }
-      ]
     }
   }
 }

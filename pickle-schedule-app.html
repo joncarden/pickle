@@ -326,12 +326,12 @@
     <!-- Next Action Section (initially hidden) -->
     <div class="next-action hidden" id="next-action">
       <h2>Next Activity</h2>
-      <div class="title">Potty Break + Short Play</div>
-      <div class="time">2:15 PM (in 12 minutes)</div>
+      <div class="title">Next Activity Will Appear Here</div>
+      <div class="time">Time will appear here</div>
       
       <div class="tip-box">
         <h3>Tip</h3>
-        <p>Remember to praise enthusiastically after successful potty and give a small treat immediately.</p>
+        <p>Activity-specific tips will appear here.</p>
       </div>
       
       <button class="complete-btn">Complete This Activity</button>
@@ -341,68 +341,8 @@
     <div class="timeline hidden" id="timeline">
       <h2>Today</h2>
       
-      <div class="timeline-item complete activity-meal">
-        <div class="timeline-time">1:00 PM</div>
-        <div class="timeline-content">
-          <div class="timeline-title">Hand-Fed Meal</div>
-        </div>
-      </div>
-      
-      <div class="timeline-item next activity-potty">
-        <div class="timeline-time">2:15 PM</div>
-        <div class="timeline-content">
-          <div class="timeline-title">Potty Break + Short Play</div>
-        </div>
-      </div>
-      
-      <div class="timeline-item activity-training">
-        <div class="timeline-time">3:00 PM</div>
-        <div class="timeline-content">
-          <div class="timeline-title">Training Session (5 min)</div>
-        </div>
-      </div>
-      
-      <div class="timeline-item activity-rest">
-        <div class="timeline-time">3:30 PM</div>
-        <div class="timeline-content">
-          <div class="timeline-title">Crate Rest (90 min)</div>
-        </div>
-      </div>
-      
-      <div class="timeline-item activity-potty">
-        <div class="timeline-time">5:00 PM</div>
-        <div class="timeline-content">
-          <div class="timeline-title">Potty + Playtime</div>
-        </div>
-      </div>
-      
-      <div class="timeline-item activity-meal">
-        <div class="timeline-time">6:00 PM</div>
-        <div class="timeline-content">
-          <div class="timeline-title">Dinner (Hand-Fed)</div>
-        </div>
-      </div>
-      
-      <div class="timeline-item activity-play">
-        <div class="timeline-time">7:00 PM</div>
-        <div class="timeline-content">
-          <div class="timeline-title">Family Time + Gentle Handling</div>
-        </div>
-      </div>
-      
-      <div class="timeline-item activity-potty">
-        <div class="timeline-time">8:30 PM</div>
-        <div class="timeline-content">
-          <div class="timeline-title">Final Potty + Wind Down</div>
-        </div>
-      </div>
-      
-      <div class="timeline-item activity-rest">
-        <div class="timeline-time">9:30 PM</div>
-        <div class="timeline-content">
-          <div class="timeline-title">Bedtime in Crate</div>
-        </div>
-      </div>
+      <!-- Timeline content will be dynamically generated based on the daily schedule in the JSON -->
+      <!-- This is a static demo page. The real app uses React components to render the timeline. -->
     </div>
   </div>
 
@@ -430,23 +370,6 @@
         // In a real app, this would mark the action complete and update
         // the next action and timeline
         alert('Activity completed! The next activity would now be shown.');
-      });
-      
-      // Make timeline items clickable to show details
-      const timelineItems = document.querySelectorAll('.timeline-item');
-      timelineItems.forEach(item => {
-        item.addEventListener('click', function() {
-          // Get the activity type from the class
-          let activityType = '';
-          if (this.classList.contains('activity-rest')) activityType = 'Rest';
-          else if (this.classList.contains('activity-training')) activityType = 'Training';
-          else if (this.classList.contains('activity-potty')) activityType = 'Potty';
-          else if (this.classList.contains('activity-play')) activityType = 'Play';
-          else if (this.classList.contains('activity-meal')) activityType = 'Meal';
-          
-          const activity = this.querySelector('.timeline-title').textContent;
-          alert(`${activityType}: ${activity}\n\nThis would show activity-specific tips and information.`);
-        });
       });
     });
   </script>
