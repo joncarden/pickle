@@ -1,5 +1,5 @@
-import { getScheduleTemplate } from './dataAccess';
-import { format, addHours, addMinutes, parse, isAfter } from 'date-fns';
+import { getScheduleTemplate, getDailySchedule, mapActivityNameToType } from './dataAccess';
+import { format, addHours, addMinutes, parse, isAfter, parseISO, set } from 'date-fns';
 
 // Activity types
 const ACTIVITY_TYPES = {
@@ -8,7 +8,8 @@ const ACTIVITY_TYPES = {
   CRATE: 'crate',
   REST: 'rest',
   PLAY: 'play',
-  TRAINING: 'training'
+  TRAINING: 'training',
+  OTHER: 'other'
 };
 
 /**
@@ -17,8 +18,180 @@ const ACTIVITY_TYPES = {
  * @returns {Array} Generated schedule for the day
  */
 export const generateSchedule = (responses) => {
-  const template = getScheduleTemplate();
   const now = new Date();
+  const template = getScheduleTemplate();
+  const dailySchedule = getDailySchedule();
+  
+  // If we have a detailed daily schedule from JSON, use that
+  if (dailySchedule && dailySchedule.length > 0) {
+    return generateScheduleFromDailySchedule(dailySchedule, responses, now);
+  }
+  
+  // Otherwise fall back to the old algorithm
+  return generateScheduleFromTemplate(template, responses, now);
+};
+
+/**
+ * Generate schedule using the JSON daily schedule
+ * @param {Array} dailySchedule - Daily schedule from JSON
+ * @param {Object} responses - Questionnaire responses
+ * @param {Date} now - Current time
+ * @returns {Array} Generated schedule
+ */
+const generateScheduleFromDailySchedule = (dailySchedule, responses, now) => {
+  const schedule = [];
+  
+  // Loop through the daily schedule
+  dailySchedule.forEach((activity, index) => {
+    // Parse the time from the activity
+    const timeStr = activity.time;
+    const [hour, minute] = timeStr.split(':');
+    
+    // Create a date object for the activity time
+    const activityTime = new Date(now);
+    activityTime.setHours(parseInt(hour, 10), parseInt(minute, 10), 0);
+    
+    // If the activity time has passed for today, skip it
+    // Unless it's a potty or meal activity and the questionnaire indicates we need one
+    const isPottyActivity = activity.activity.toLowerCase().includes('potty');
+    const isMealActivity = activity.activity.toLowerCase().includes('meal');
+    const needsImmediatePotty = responses.potty === 'no' && isPottyActivity;
+    const needsMeal = responses.lastMeal === 'long' && isMealActivity;
+    
+    if (activityTime < now && !needsImmediatePotty && !needsMeal) {
+      return;
+    }
+    
+    // Determine the activity type
+    const activityType = mapActivityNameToType(activity.activity);
+    
+    // Add to schedule
+    schedule.push({
+      time: format(activityTime, 'h:mm a'),
+      rawTime: new Date(activityTime),
+      title: activity.activity,
+      type: activityType,
+      duration: activity.duration || null,
+      notes: activity.notes || null,
+      completed: false,
+      isNext: false
+    });
+  });
+  
+  // Sort the schedule by time
+  const sortedSchedule = schedule.sort((a, b) => a.rawTime - b.rawTime);
+  
+  // Adjust the schedule based on questionnaire responses
+  const adjustedSchedule = adjustScheduleBasedOnQuestionnaire(sortedSchedule, responses, now);
+  
+  // Mark the first incomplete activity as next
+  const firstIncompleteIndex = adjustedSchedule.findIndex(item => !item.completed);
+  if (firstIncompleteIndex !== -1) {
+    // Reset all isNext flags
+    adjustedSchedule.forEach(item => item.isNext = false);
+    // Set the first incomplete activity as next
+    adjustedSchedule[firstIncompleteIndex].isNext = true;
+  }
+  
+  return adjustedSchedule;
+};
+
+/**
+ * Adjust the daily schedule based on questionnaire responses
+ * @param {Array} schedule - Generated schedule
+ * @param {Object} responses - Questionnaire responses
+ * @param {Date} now - Current time
+ * @returns {Array} Adjusted schedule
+ */
+const adjustScheduleBasedOnQuestionnaire = (schedule, responses, now) => {
+  const adjustedSchedule = [...schedule];
+  
+  // If puppy hasn't gone potty recently and there's no immediate potty break
+  if (responses.potty === 'no') {
+    const nextPottyIndex = adjustedSchedule.findIndex(item => item.type === ACTIVITY_TYPES.POTTY);
+    const nextPottyTime = nextPottyIndex !== -1 ? adjustedSchedule[nextPottyIndex].rawTime : null;
+    
+    // If next potty is more than 30 minutes away, add an immediate potty break
+    if (!nextPottyTime || (nextPottyTime - now) > 30 * 60 * 1000) {
+      const immediateTime = new Date(now);
+      adjustedSchedule.unshift({
+        time: format(immediateTime, 'h:mm a'),
+        rawTime: immediateTime,
+        title: 'Immediate Potty Break',
+        type: ACTIVITY_TYPES.POTTY,
+        completed: false,
+        isNext: true
+      });
+    }
+  }
+  
+  // Handle meal timing based on responses
+  if (responses.lastMeal === 'long') {
+    const nextMealIndex = adjustedSchedule.findIndex(item => item.type === ACTIVITY_TYPES.MEAL);
+    const nextMealTime = nextMealIndex !== -1 ? adjustedSchedule[nextMealIndex].rawTime : null;
+    
+    // If next meal is more than 60 minutes away, add an earlier meal
+    if (!nextMealTime || (nextMealTime - now) > 60 * 60 * 1000) {
+      const mealTime = addMinutes(now, 15);
+      adjustedSchedule.unshift({
+        time: format(mealTime, 'h:mm a'),
+        rawTime: mealTime,
+        title: 'Added Meal',
+        type: ACTIVITY_TYPES.MEAL,
+        completed: false,
+        isNext: false
+      });
+      
+      // Add potty break after meal
+      const postMealPotty = addMinutes(mealTime, 30);
+      adjustedSchedule.push({
+        time: format(postMealPotty, 'h:mm a'),
+        rawTime: postMealPotty,
+        title: 'Potty Break (after meal)',
+        type: ACTIVITY_TYPES.POTTY,
+        completed: false,
+        isNext: false
+      });
+      
+      // Re-sort the schedule
+      adjustedSchedule.sort((a, b) => a.rawTime - b.rawTime);
+    }
+  }
+  
+  // Handle nap timing based on responses
+  if (responses.lastNap === 'long' || (responses.energy === 'high' && responses.lastNap !== 'recent')) {
+    const nextRestIndex = adjustedSchedule.findIndex(item => item.type === ACTIVITY_TYPES.REST);
+    const nextRestTime = nextRestIndex !== -1 ? adjustedSchedule[nextRestIndex].rawTime : null;
+    
+    // If next rest is more than 45 minutes away, add an earlier rest period
+    if (!nextRestTime || (nextRestTime - now) > 45 * 60 * 1000) {
+      const restTime = addMinutes(now, 15);
+      adjustedSchedule.unshift({
+        time: format(restTime, 'h:mm a'),
+        rawTime: restTime,
+        title: 'Added Crate Rest',
+        type: ACTIVITY_TYPES.REST,
+        duration: '60-90 min',
+        completed: false,
+        isNext: false
+      });
+      
+      // Re-sort the schedule
+      adjustedSchedule.sort((a, b) => a.rawTime - b.rawTime);
+    }
+  }
+  
+  return adjustedSchedule;
+};
+
+/**
+ * Generate schedule using the template-based algorithm
+ * @param {Object} template - Schedule template
+ * @param {Object} responses - Questionnaire responses
+ * @param {Date} now - Current time
+ * @returns {Array} Generated schedule
+ */
+const generateScheduleFromTemplate = (template, responses, now) => {
   const schedule = [];
   
   // Get potty frequency based on age

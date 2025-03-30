@@ -39,10 +39,12 @@ export default function NextActivity({ activity, onComplete, tips }) {
   // If no activity, don't render
   if (!activity) return null;
   
-  // Get a random tip
-  const tip = tips && tips.length > 0 
-    ? tips[Math.floor(Math.random() * tips.length)] 
-    : "Remember to be consistent with Pickle's training!";
+  // Get a tip - first use the activity's notes if available, otherwise use the tips from JSON
+  const tip = activity.notes 
+    ? activity.notes 
+    : (tips && tips.length > 0 
+      ? tips[Math.floor(Math.random() * tips.length)] 
+      : "Remember to be consistent with Pickle's training!");
   
   // Determine background color based on activity type
   const getBgColor = (type) => {
@@ -52,7 +54,8 @@ export default function NextActivity({ activity, onComplete, tips }) {
       'rest': 'bg-activity-rest',
       'play': 'bg-activity-play',
       'training': 'bg-activity-training',
-      'crate': 'bg-activity-rest'
+      'crate': 'bg-activity-rest',
+      'other': 'bg-primary'
     };
     
     return colors[type] || 'bg-primary';
@@ -63,6 +66,10 @@ export default function NextActivity({ activity, onComplete, tips }) {
       <h2 className="text-sm uppercase tracking-wider opacity-90 mb-1">Next Activity</h2>
       <div className="text-xl font-semibold mb-1">{activity.title}</div>
       <div className="text-base opacity-90 mb-4">{activity.time} ({countdown})</div>
+      
+      {activity.duration && (
+        <div className="text-sm opacity-75 mb-4">Duration: {activity.duration}</div>
+      )}
       
       <div className="bg-white/15 rounded-lg p-4 my-4 border-l-4 border-white/30">
         <h3 className="text-sm uppercase tracking-wider opacity-90 mb-1">Tip</h3>

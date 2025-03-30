@@ -20,7 +20,8 @@ export default function Timeline({ schedule, onCompleteActivity }) {
       'rest': 'bg-activity-rest',
       'play': 'bg-activity-play',
       'training': 'bg-activity-training',
-      'crate': 'bg-activity-rest'
+      'crate': 'bg-activity-rest',
+      'other': 'bg-gray'
     };
     
     return typeClasses[type] || 'bg-gray';
@@ -82,6 +83,12 @@ export default function Timeline({ schedule, onCompleteActivity }) {
                 {activity.duration && (
                   <div className="text-sm text-gray-600">
                     Duration: {activity.duration}
+                  </div>
+                )}
+                
+                {activity.notes && (
+                  <div className="text-sm text-gray-600 mt-1 italic">
+                    {activity.notes}
                   </div>
                 )}
               </div>

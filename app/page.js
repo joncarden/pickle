@@ -26,10 +26,21 @@ export default function Home() {
       // Only use saved schedule if it's from today
       const today = new Date().toDateString();
       if (savedDate === today) {
-        const parsedSchedule = JSON.parse(savedSchedule);
-        setSchedule(parsedSchedule);
-        setNextActivity(getNextActivity(parsedSchedule));
-        setShowQuestionnaire(false);
+        try {
+          const parsedSchedule = JSON.parse(savedSchedule);
+          // Convert string dates back to Date objects
+          parsedSchedule.forEach(item => {
+            if (item.rawTime) {
+              item.rawTime = new Date(item.rawTime);
+            }
+          });
+          setSchedule(parsedSchedule);
+          setNextActivity(getNextActivity(parsedSchedule));
+          setShowQuestionnaire(false);
+        } catch (error) {
+          console.error("Error parsing saved schedule:", error);
+          // If there's an error, we'll just show the questionnaire
+        }
       }
     }
   }, []);
@@ -37,8 +48,12 @@ export default function Home() {
   // Save schedule to localStorage whenever it changes
   useEffect(() => {
     if (schedule) {
-      localStorage.setItem('pickleSchedule', JSON.stringify(schedule));
-      localStorage.setItem('pickleScheduleDate', new Date().toDateString());
+      try {
+        localStorage.setItem('pickleSchedule', JSON.stringify(schedule));
+        localStorage.setItem('pickleScheduleDate', new Date().toDateString());
+      } catch (error) {
+        console.error("Error saving schedule to localStorage:", error);
+      }
     }
   }, [schedule]);
   
@@ -59,6 +74,8 @@ export default function Home() {
     setShowQuestionnaire(true);
     setSchedule(null);
     setNextActivity(null);
+    localStorage.removeItem('pickleSchedule');
+    localStorage.removeItem('pickleScheduleDate');
   };
   
   return (
