@@ -27,6 +27,22 @@ export default function Timeline({ schedule, onCompleteActivity }) {
     return typeClasses[type] || 'bg-gray';
   };
   
+  // Format a time display string - handle current and upcoming times properly
+  const getFormattedTime = (activity) => {
+    if (!activity.rawTime) return activity.time;
+    
+    const now = new Date();
+    const activityTime = new Date(activity.rawTime);
+    
+    // If the time is within 5 minutes of current time, show "now"
+    if (Math.abs(now - activityTime) < 5 * 60 * 1000) {
+      return "Now";
+    }
+    
+    // Otherwise use the stored formatted time
+    return activity.time;
+  };
+  
   return (
     <div className="card">
       <h2 className="text-gray font-medium mb-4 uppercase tracking-wider text-sm">Today's Schedule</h2>
@@ -62,7 +78,7 @@ export default function Timeline({ schedule, onCompleteActivity }) {
             
             <div className="flex">
               <div className="w-20 font-medium text-dark">
-                {activity.time}
+                {getFormattedTime(activity)}
               </div>
               
               <div className="flex-1">

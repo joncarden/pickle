@@ -61,11 +61,24 @@ export default function NextActivity({ activity, onComplete, tips }) {
     return colors[type] || 'bg-primary';
   };
   
+  // Format the display time - if it's happening now, show the current time
+  const getDisplayTime = () => {
+    if (countdown === 'now') {
+      return new Date().toLocaleTimeString('en-US', {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
+      }) + ' (now)';
+    } else {
+      return `${activity.time} (${countdown})`;
+    }
+  };
+  
   return (
     <div className={`${getBgColor(activity.type)} text-white rounded-xl p-6 mb-6 shadow-md`}>
       <h2 className="text-sm uppercase tracking-wider opacity-90 mb-1">Next Activity</h2>
       <div className="text-xl font-semibold mb-1">{activity.title}</div>
-      <div className="text-base opacity-90 mb-4">{activity.time} ({countdown})</div>
+      <div className="text-base opacity-90 mb-4">{getDisplayTime()}</div>
       
       {activity.duration && (
         <div className="text-sm opacity-75 mb-4">Duration: {activity.duration}</div>

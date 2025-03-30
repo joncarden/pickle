@@ -28,19 +28,62 @@ export default function Home() {
       if (savedDate === today) {
         try {
           const parsedSchedule = JSON.parse(savedSchedule);
-          // Convert string dates back to Date objects
+          const currentTime = new Date();
+          
+          // Convert string dates back to Date objects with current date
           parsedSchedule.forEach(item => {
             if (item.rawTime) {
-              item.rawTime = new Date(item.rawTime);
+              // Create a new date object with the current date but time from saved schedule
+              const savedTime = new Date(item.rawTime);
+              const newRawTime = new Date(currentTime);
+              
+              // Set hours and minutes from the saved time
+              newRawTime.setHours(savedTime.getHours(), savedTime.getMinutes(), 0, 0);
+              
+              // If the saved time is earlier than current time and not completed, 
+              // it's from yesterday's schedule - adjust accordingly
+              if (newRawTime < currentTime && !item.completed && !item.isNext) {
+                // For overnight activities (like 2:40 AM potty break)
+                if (savedTime.getHours() < 6) {
+                  // It's an overnight activity, set it to tomorrow
+                  newRawTime.setDate(newRawTime.getDate() + 1);
+                }
+              }
+              
+              item.rawTime = newRawTime;
+              
+              // Also update the formatted time string
+              item.time = item.rawTime.toLocaleTimeString('en-US', {
+                hour: 'numeric',
+                minute: '2-digit',
+                hour12: true
+              });
             }
           });
+          
+          // Sort the schedule by time again in case times were adjusted
+          parsedSchedule.sort((a, b) => a.rawTime - b.rawTime);
+          
+          // Find the next incomplete activity
+          const nextIncompleteIndex = parsedSchedule.findIndex(item => !item.completed);
+          if (nextIncompleteIndex !== -1) {
+            // Reset all isNext flags
+            parsedSchedule.forEach(item => item.isNext = false);
+            // Set the first incomplete activity as next
+            parsedSchedule[nextIncompleteIndex].isNext = true;
+          }
+          
           setSchedule(parsedSchedule);
           setNextActivity(getNextActivity(parsedSchedule));
           setShowQuestionnaire(false);
         } catch (error) {
           console.error("Error parsing saved schedule:", error);
           // If there's an error, we'll just show the questionnaire
+          handleReset();
         }
+      } else {
+        // Not today's schedule, reset
+        handleReset();
       }
     }
   }, []);
@@ -59,6 +102,19 @@ export default function Home() {
   
   const handleGenerateSchedule = (responses) => {
     const newSchedule = generateSchedule(responses);
+    
+    // Ensure all times are correct before setting the schedule
+    newSchedule.forEach(item => {
+      if (item.rawTime) {
+        // Update the formatted time string to match the rawTime
+        item.time = item.rawTime.toLocaleTimeString('en-US', {
+          hour: 'numeric',
+          minute: '2-digit',
+          hour12: true
+        });
+      }
+    });
+    
     setSchedule(newSchedule);
     setNextActivity(getNextActivity(newSchedule));
     setShowQuestionnaire(false);
