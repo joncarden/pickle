@@ -7,14 +7,20 @@ import pickleData from '../data/pickle-guidance.json';
  * @returns {Object} Guidance data for Pickle's current age
  */
 export const getGuidanceForCurrentAge = (category = null) => {
-  const ageRange = getPickleAgeRange();
-  const ageData = pickleData.ages[ageRange];
+  // With the new structure, we now use feedingInfo, crateGuidance, and pottyGuidance directly
+  const mapping = {
+    'feeding': 'feedingInfo',
+    'crate': 'crateGuidance',
+    'potty': 'pottyGuidance'
+  };
   
-  if (category && ageData[category]) {
-    return ageData[category];
+  const categoryKey = mapping[category] || null;
+  
+  if (categoryKey && pickleData[categoryKey]) {
+    return pickleData[categoryKey];
   }
   
-  return ageData;
+  return pickleData;
 };
 
 /**
@@ -22,8 +28,31 @@ export const getGuidanceForCurrentAge = (category = null) => {
  * @returns {Object} Schedule template
  */
 export const getScheduleTemplate = () => {
-  const ageRange = getPickleAgeRange();
-  return pickleData.scheduleTemplates[ageRange];
+  // In the new structure, we create a template from the guidance info
+  return {
+    pottyFrequency: 2, // Default to every 2 hours
+    mealTimes: ["6:45 AM", "11:30 AM", "6:35 PM"],
+    activities: [
+      {
+        type: 'potty',
+        duration: 5,
+        frequency: pickleData.pottyGuidance?.frequency || "every 1-2 hours",
+        tips: ["Take outside immediately after meals", "Reward after success"]
+      },
+      {
+        type: 'meal',
+        duration: 15,
+        frequency: `${pickleData.feedingInfo?.meals || 3}x daily`,
+        tips: [pickleData.feedingInfo?.handFeeding || "Hand-feed when possible"]
+      },
+      {
+        type: 'rest',
+        duration: 60,
+        frequency: "multiple times daily",
+        tips: [pickleData.crateGuidance?.toys || "Provide appropriate toys"]
+      }
+    ]
+  };
 };
 
 /**
@@ -32,15 +61,12 @@ export const getScheduleTemplate = () => {
  * @returns {Array} Daily schedule activities
  */
 export const getDailySchedule = (dayType = 'weekday') => {
-  const ageRange = getPickleAgeRange();
-  const ageData = pickleData.ages[ageRange];
-  
-  // Check if daily schedule exists for current age
-  if (ageData && ageData.dailySchedule && ageData.dailySchedule[dayType]) {
-    return ageData.dailySchedule[dayType];
+  // In the new structure, dailySchedule is at the root level
+  if (pickleData.dailySchedule && pickleData.dailySchedule.length > 0) {
+    return pickleData.dailySchedule;
   }
   
-  // Fallback to general schedule template if detailed schedule not available
+  // Fallback to empty array if no schedule
   return [];
 };
 
@@ -52,18 +78,16 @@ export const getDailySchedule = (dayType = 'weekday') => {
 export const getRandomTip = (category) => {
   const guidance = getGuidanceForCurrentAge(category);
   
-  if (!guidance || !guidance.tips) {
-    // If no specific tips array, try to extract from techniques
-    if (guidance && guidance.techniques) {
-      const allSteps = guidance.techniques.flatMap(technique => technique.steps);
-      if (allSteps.length > 0) {
-        return allSteps[Math.floor(Math.random() * allSteps.length)];
-      }
-    }
-    return "Remember to be consistent with Pickle's training!";
+  // The new structure has different fields, so we need to check what's available
+  if (category === 'feeding' && guidance) {
+    return guidance.handFeeding || "Remember to be consistent with Pickle's feeding!";
+  } else if (category === 'crate' && guidance) {
+    return guidance.toys || "Make crate time positive with appropriate toys!";
+  } else if (category === 'potty' && guidance) {
+    return guidance.frequency || "Take Pickle out frequently for potty breaks!";
   }
   
-  return guidance.tips[Math.floor(Math.random() * guidance.tips.length)];
+  return "Remember to be consistent with Pickle's training!";
 };
 
 /**
@@ -83,10 +107,13 @@ export const getActivityTips = (activityType) => {
   
   // Fallback to category guidance
   const category = activityTypeToCategory(activityType);
-  const guidance = getGuidanceForCurrentAge(category);
   
-  if (guidance && guidance.tips) {
-    return guidance.tips;
+  if (category === 'feeding') {
+    return [pickleData.feedingInfo?.handFeeding || "Feed consistently"];
+  } else if (category === 'crate') {
+    return [pickleData.crateGuidance?.duration || "Use crate for rest periods"];
+  } else if (category === 'potty') {
+    return [pickleData.pottyGuidance?.frequency || "Take out regularly"];
   }
   
   return ["Remember to be consistent with Pickle's routine!"];
