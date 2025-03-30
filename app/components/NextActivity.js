@@ -5,13 +5,17 @@ import { formatDistanceToNow } from 'date-fns';
 
 export default function NextActivity({ activity, onComplete, tips }) {
   const [countdown, setCountdown] = useState('');
+  const [currentTime, setCurrentTime] = useState(new Date());
   
   useEffect(() => {
-    // Initialize countdown
+    // Initialize countdown and current time
     updateCountdown();
     
-    // Update countdown every minute
-    const interval = setInterval(updateCountdown, 60000);
+    // Update countdown and current time every minute
+    const interval = setInterval(() => {
+      setCurrentTime(new Date());
+      updateCountdown();
+    }, 60000);
     
     // Cleanup interval on unmount
     return () => clearInterval(interval);
@@ -23,7 +27,8 @@ export default function NextActivity({ activity, onComplete, tips }) {
     const activityTime = new Date(activity.rawTime);
     const now = new Date();
     
-    if (now > activityTime) {
+    // If it's an immediate activity or the time has passed
+    if (activity.isImmediate || now > activityTime) {
       setCountdown('now');
     } else {
       try {
@@ -63,8 +68,8 @@ export default function NextActivity({ activity, onComplete, tips }) {
   
   // Format the display time - if it's happening now, show the current time
   const getDisplayTime = () => {
-    if (countdown === 'now') {
-      return new Date().toLocaleTimeString('en-US', {
+    if (countdown === 'now' || activity.isImmediate) {
+      return currentTime.toLocaleTimeString('en-US', {
         hour: 'numeric',
         minute: '2-digit',
         hour12: true

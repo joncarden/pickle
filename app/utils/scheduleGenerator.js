@@ -51,6 +51,15 @@ const generateScheduleFromDailySchedule = (dailySchedule, responses, now) => {
     const activityTime = new Date(now);
     activityTime.setHours(parseInt(hour, 10), parseInt(minute, 10), 0);
     
+    // Handle early morning activities (before 6 AM)
+    if (parseInt(hour, 10) < 6) {
+      // If it's early morning and current time is not early morning,
+      // set the activity to tomorrow
+      if (now.getHours() >= 6) {
+        activityTime.setDate(activityTime.getDate() + 1);
+      }
+    }
+    
     // If the activity time has passed for today, skip it
     // Unless it's a potty or meal activity and the questionnaire indicates we need one
     const isPottyActivity = activity.activity.toLowerCase().includes('potty');
@@ -58,6 +67,7 @@ const generateScheduleFromDailySchedule = (dailySchedule, responses, now) => {
     const needsImmediatePotty = responses.potty === 'no' && isPottyActivity;
     const needsMeal = responses.lastMeal === 'long' && isMealActivity;
     
+    // Check if we should skip this activity
     if (activityTime < now && !needsImmediatePotty && !needsMeal) {
       return;
     }
@@ -81,19 +91,39 @@ const generateScheduleFromDailySchedule = (dailySchedule, responses, now) => {
   // Sort the schedule by time
   const sortedSchedule = schedule.sort((a, b) => a.rawTime - b.rawTime);
   
+  // Remove any duplicate activities based on time
+  const uniqueSchedule = [];
+  const seenTimes = new Map();
+  
+  sortedSchedule.forEach(item => {
+    if (item.rawTime) {
+      const timeKey = item.rawTime.getHours() * 100 + item.rawTime.getMinutes();
+      
+      // Check if we have an item very close to this time already
+      if (!seenTimes.has(timeKey)) {
+        // No duplicate, add it
+        uniqueSchedule.push(item);
+        seenTimes.set(timeKey, true);
+      }
+    }
+  });
+  
   // Adjust the schedule based on questionnaire responses
-  const adjustedSchedule = adjustScheduleBasedOnQuestionnaire(sortedSchedule, responses, now);
+  const adjustedSchedule = adjustScheduleBasedOnQuestionnaire(uniqueSchedule, responses, now);
+  
+  // Remove any activities after bedtime (after 10 PM and before 5 AM tomorrow)
+  const filteredSchedule = removeConflictingActivities(adjustedSchedule);
   
   // Mark the first incomplete activity as next
-  const firstIncompleteIndex = adjustedSchedule.findIndex(item => !item.completed);
+  const firstIncompleteIndex = filteredSchedule.findIndex(item => !item.completed);
   if (firstIncompleteIndex !== -1) {
     // Reset all isNext flags
-    adjustedSchedule.forEach(item => item.isNext = false);
+    filteredSchedule.forEach(item => item.isNext = false);
     // Set the first incomplete activity as next
-    adjustedSchedule[firstIncompleteIndex].isNext = true;
+    filteredSchedule[firstIncompleteIndex].isNext = true;
   }
   
-  return adjustedSchedule;
+  return filteredSchedule;
 };
 
 /**
@@ -106,6 +136,14 @@ const generateScheduleFromDailySchedule = (dailySchedule, responses, now) => {
 const adjustScheduleBasedOnQuestionnaire = (schedule, responses, now) => {
   const adjustedSchedule = [...schedule];
   
+  // Find bedtime if it exists to avoid scheduling after it
+  const bedtimeActivity = adjustedSchedule.find(item => 
+    item.title.toLowerCase().includes('bedtime') || 
+    (item.type === ACTIVITY_TYPES.REST && item.rawTime.getHours() >= 21)
+  );
+  
+  const bedTime = bedtimeActivity ? bedtimeActivity.rawTime : null;
+  
   // If puppy hasn't gone potty recently and there's no immediate potty break
   if (responses.potty === 'no') {
     const nextPottyIndex = adjustedSchedule.findIndex(item => item.type === ACTIVITY_TYPES.POTTY);
@@ -114,14 +152,19 @@ const adjustScheduleBasedOnQuestionnaire = (schedule, responses, now) => {
     // If next potty is more than 30 minutes away, add an immediate potty break
     if (!nextPottyTime || (nextPottyTime - now) > 30 * 60 * 1000) {
       const immediateTime = new Date(now);
-      adjustedSchedule.unshift({
-        time: format(immediateTime, 'h:mm a'),
-        rawTime: immediateTime,
-        title: 'Immediate Potty Break',
-        type: ACTIVITY_TYPES.POTTY,
-        completed: false,
-        isNext: true
-      });
+      
+      // Only add if before bedtime
+      if (!bedTime || immediateTime < bedTime) {
+        adjustedSchedule.unshift({
+          time: format(immediateTime, 'h:mm a'),
+          rawTime: immediateTime,
+          title: 'Immediate Potty Break',
+          type: ACTIVITY_TYPES.POTTY,
+          completed: false,
+          isNext: true,
+          isImmediate: true
+        });
+      }
     }
   }
   
@@ -212,7 +255,8 @@ const generateScheduleFromTemplate = (template, responses, now) => {
       title: 'Potty Break',
       type: ACTIVITY_TYPES.POTTY,
       completed: false,
-      isNext: true
+      isNext: true,
+      isImmediate: true
     });
     
     nextTime = addMinutes(nextTime, 15);

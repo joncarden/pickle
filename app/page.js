@@ -37,16 +37,29 @@ export default function Home() {
               const savedTime = new Date(item.rawTime);
               const newRawTime = new Date(currentTime);
               
+              // Reset isNext flag - we'll recalculate it later
+              item.isNext = false;
+              
               // Set hours and minutes from the saved time
               newRawTime.setHours(savedTime.getHours(), savedTime.getMinutes(), 0, 0);
               
-              // If the saved time is earlier than current time and not completed, 
-              // it's from yesterday's schedule - adjust accordingly
-              if (newRawTime < currentTime && !item.completed && !item.isNext) {
-                // For overnight activities (like 2:40 AM potty break)
-                if (savedTime.getHours() < 6) {
-                  // It's an overnight activity, set it to tomorrow
+              // Handle early morning activities (before 6 AM)
+              if (savedTime.getHours() < 6) {
+                // Always set early morning activities to tomorrow if they're not completed
+                if (!item.completed) {
                   newRawTime.setDate(newRawTime.getDate() + 1);
+                }
+              }
+              // Handle past activities that aren't completed
+              else if (newRawTime < currentTime && !item.completed) {
+                // If activity was more than 2 hours ago, mark it as completed
+                const hoursPast = (currentTime - newRawTime) / (60 * 60 * 1000);
+                if (hoursPast > 2) {
+                  item.completed = true;
+                } else {
+                  // If it's reasonably recent (within 2 hours), adjust to current time
+                  // This handles the case where an immediate activity should be happening now
+                  newRawTime.setTime(currentTime.getTime());
                 }
               }
               
@@ -61,20 +74,48 @@ export default function Home() {
             }
           });
           
-          // Sort the schedule by time again in case times were adjusted
+          // Clean up the schedule - remove duplicates or closely spaced activities
+          const cleanedSchedule = [];
+          const seenTimes = new Map();
+          
+          // Sort before cleaning to ensure correct order
           parsedSchedule.sort((a, b) => a.rawTime - b.rawTime);
           
-          // Find the next incomplete activity
-          const nextIncompleteIndex = parsedSchedule.findIndex(item => !item.completed);
+          // Remove duplicate/redundant activities
+          parsedSchedule.forEach(item => {
+            if (item.rawTime) {
+              const timeKey = item.rawTime.getHours() * 100 + item.rawTime.getMinutes();
+              
+              // Check if we have an item very close to this time already
+              const existingItem = seenTimes.get(timeKey);
+              
+              if (!existingItem) {
+                // No duplicate, add it
+                cleanedSchedule.push(item);
+                seenTimes.set(timeKey, item);
+              } 
+              // If there's a duplicate but this one isn't completed and the existing one is
+              else if (!item.completed && existingItem.completed) {
+                // Replace the completed item with the non-completed one
+                const index = cleanedSchedule.indexOf(existingItem);
+                cleanedSchedule[index] = item;
+                seenTimes.set(timeKey, item);
+              }
+            }
+          });
+          
+          // Re-sort the cleaned schedule
+          cleanedSchedule.sort((a, b) => a.rawTime - b.rawTime);
+          
+          // Find the next incomplete activity - should be the first non-completed item
+          const nextIncompleteIndex = cleanedSchedule.findIndex(item => !item.completed);
           if (nextIncompleteIndex !== -1) {
-            // Reset all isNext flags
-            parsedSchedule.forEach(item => item.isNext = false);
             // Set the first incomplete activity as next
-            parsedSchedule[nextIncompleteIndex].isNext = true;
+            cleanedSchedule[nextIncompleteIndex].isNext = true;
           }
           
-          setSchedule(parsedSchedule);
-          setNextActivity(getNextActivity(parsedSchedule));
+          setSchedule(cleanedSchedule);
+          setNextActivity(getNextActivity(cleanedSchedule));
           setShowQuestionnaire(false);
         } catch (error) {
           console.error("Error parsing saved schedule:", error);

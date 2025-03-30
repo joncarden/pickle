@@ -33,22 +33,46 @@ export default function Timeline({ schedule, onCompleteActivity }) {
     
     const now = new Date();
     const activityTime = new Date(activity.rawTime);
+    const today = new Date(now);
+    today.setHours(0, 0, 0, 0);
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
     
-    // If the time is within 5 minutes of current time, show "now"
+    // If it's an immediate activity, show "Now"
+    if (activity.isImmediate) {
+      return "Now";
+    }
+    
+    // If the time is within 5 minutes of current time, also show "Now"
     if (Math.abs(now - activityTime) < 5 * 60 * 1000) {
       return "Now";
     }
     
-    // Otherwise use the stored formatted time
-    return activity.time;
+    // Check if the activity is scheduled for tomorrow
+    const isTomorrow = activityTime.getDate() !== now.getDate() && 
+                       activityTime > now;
+    
+    // Format properly with today/tomorrow label
+    const timeString = activity.time;
+    if (isTomorrow) {
+      return `${timeString} (tomorrow)`;
+    }
+    
+    return timeString;
   };
+  
+  // Group activities by day
+  const sortedActivities = [...schedule].sort((a, b) => {
+    if (!a.rawTime || !b.rawTime) return 0;
+    return a.rawTime - b.rawTime;
+  });
   
   return (
     <div className="card">
       <h2 className="text-gray font-medium mb-4 uppercase tracking-wider text-sm">Today's Schedule</h2>
       
       <div className="timeline">
-        {schedule.map((activity, index) => (
+        {sortedActivities.map((activity, index) => (
           <div
             key={`${activity.time}-${index}`}
             className={`timeline-item relative pl-8 pb-4 mb-4 border-b border-gray-100 last:border-b-0 last:mb-0 last:pb-0 ${
@@ -77,7 +101,7 @@ export default function Timeline({ schedule, onCompleteActivity }) {
             ></div>
             
             <div className="flex">
-              <div className="w-20 font-medium text-dark">
+              <div className="w-28 font-medium text-dark">
                 {getFormattedTime(activity)}
               </div>
               
