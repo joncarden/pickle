@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pickle's Day</title>
+  <style>
+    :root {
+      --primary: #4a90e2;
+      --secondary: #f5a623;
+      --success: #7ed321;
+      --danger: #d0021b;
+      --light: #f8f9fa;
+      --dark: #333333;
+      --gray: #9b9b9b;
+      --white: #ffffff;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    
+    body {
+      background-color: var(--light);
+      color: var(--dark);
+      line-height: 1.6;
+    }
+    
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 1rem;
+    }
+    
+    header {
+      text-align: center;
+      padding: 1.5rem 0;
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+      margin-bottom: 1.5rem;
+    }
+    
+    header h1 {
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+    
+    .questionnaire {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      margin-bottom: 1.5rem;
+    }
+    
+    .questionnaire h2 {
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+      font-weight: 500;
+    }
+    
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: var(--dark);
+    }
+    
+    .toggle-group {
+      display: flex;
+      background: #f1f3f5;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    
+    .toggle-group label {
+      flex: 1;
+      text-align: center;
+      padding: 0.75rem;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin: 0;
+    }
+    
+    .toggle-group input {
+      display: none;
+    }
+    
+    .toggle-group input:checked + label {
+      background: var(--primary);
+      color: white;
+    }
+    
+    select {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      appearance: none;
+      background: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'%3E%3C/path%3E%3C/svg%3E") no-repeat right 0.75rem center/16px 16px;
+    }
+    
+    button {
+      width: 100%;
+      padding: 1rem;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 1rem;
+      transition: opacity 0.2s;
+    }
+    
+    button:hover {
+      opacity: 0.9;
+    }
+    
+    .next-action {
+      background: var(--primary);
+      color: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 4px 12px rgba(74, 144, 226, 0.2);
+    }
+    
+    .next-action h2 {
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      opacity: 0.9;
+      margin-bottom: 0.5rem;
+    }
+    
+    .next-action .title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+    
+    .next-action .time {
+      font-size: 1.125rem;
+      opacity: 0.9;
+      margin-bottom: 1rem;
+    }
+    
+    .complete-btn {
+      background: white;
+      color: var(--primary);
+      margin-top: 0.5rem;
+      font-weight: 500;
+    }
+    
+    .tip-box {
+      background: rgba(255,255,255,0.15);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-top: 1rem;
+      border-left: 4px solid rgba(255,255,255,0.3);
+    }
+    
+    .tip-box h3 {
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.25rem;
+      opacity: 0.9;
+    }
+    
+    .timeline {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem 1.5rem 1.5rem 2rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    
+    .timeline h2 {
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--gray);
+    }
+    
+    .timeline-item {
+      display: flex;
+      margin-bottom: 1rem;
+      padding-bottom: 1rem;
+      padding-left: 8px;
+      border-bottom: 1px solid #f1f3f5;
+      position: relative;
+    }
+    
+    .timeline-item:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+    
+    .timeline-time {
+      width: 80px;
+      font-weight: 500;
+      color: var(--dark);
+    }
+    
+    .timeline-content {
+      flex: 1;
+    }
+    
+    .timeline-title {
+      font-weight: 500;
+      margin-bottom: 0.25rem;
+      color: var(--dark);
+    }
+    
+    .timeline-item {
+      position: relative;
+    }
+    
+    .timeline-item::before {
+      content: "";
+      position: absolute;
+      left: -8px;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      border-radius: 2px;
+      background: var(--gray);
+    }
+    
+    .timeline-item.activity-rest::before {
+      background: #9B59B6;
+    }
+    
+    .timeline-item.activity-training::before {
+      background: #F39C12;
+    }
+    
+    .timeline-item.activity-potty::before {
+      background: #16A085;
+    }
+    
+    .timeline-item.activity-play::before {
+      background: #E74C3C;
+    }
+    
+    .timeline-item.activity-meal::before {
+      background: #2980B9;
+    }
+    
+    .timeline-item.next::before {
+      background: var(--primary);
+    }
+    
+    .timeline-item.complete::before {
+      background: var(--success);
+    }
+    
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Pickle's Day</h1>
+    </header>
+    
+    <!-- Daily Questionnaire Section -->
+    <div class="questionnaire" id="questionnaire">
+      <h2>Quick Setup for Today</h2>
+      
+      <div class="form-group">
+        <label>Has Pickle gone potty in the last hour?</label>
+        <div class="toggle-group">
+          <input type="radio" name="potty" id="potty-yes" value="yes">
+          <label for="potty-yes">Yes</label>
+          <input type="radio" name="potty" id="potty-no" value="no" checked>
+          <label for="potty-no">No</label>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label>When was Pickle's last meal?</label>
+        <select id="last-meal">
+          <option value="recent">Less than 1 hour ago</option>
+          <option value="medium" selected>1-3 hours ago</option>
+          <option value="long">More than 3 hours ago</option>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label>How long since Pickle's last nap/crate time?</label>
+        <select id="last-nap">
+          <option value="recent">Just woke up (less than 30 min)</option>
+          <option value="medium" selected>30-90 minutes ago</option>
+          <option value="long">More than 90 minutes ago</option>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label>What's Pickle's current energy level?</label>
+        <div class="toggle-group">
+          <input type="radio" name="energy" id="energy-low" value="low">
+          <label for="energy-low">Low</label>
+          <input type="radio" name="energy" id="energy-medium" value="medium" checked>
+          <label for="energy-medium">Medium</label>
+          <input type="radio" name="energy" id="energy-high" value="high">
+          <label for="energy-high">High</label>
+        </div>
+      </div>
+      
+      <button id="generate-btn">Generate Schedule</button>
+    </div>
+    
+    <!-- Next Action Section (initially hidden) -->
+    <div class="next-action hidden" id="next-action">
+      <h2>Next Activity</h2>
+      <div class="title">Potty Break + Short Play</div>
+      <div class="time">2:15 PM (in 12 minutes)</div>
+      
+      <div class="tip-box">
+        <h3>Tip</h3>
+        <p>Remember to praise enthusiastically after successful potty and give a small treat immediately.</p>
+      </div>
+      
+      <button class="complete-btn">Complete This Activity</button>
+    </div>
+    
+    <!-- Timeline Section (initially hidden) -->
+    <div class="timeline hidden" id="timeline">
+      <h2>Today</h2>
+      
+      <div class="timeline-item complete activity-meal">
+        <div class="timeline-time">1:00 PM</div>
+        <div class="timeline-content">
+          <div class="timeline-title">Hand-Fed Meal</div>
+        </div>
+      </div>
+      
+      <div class="timeline-item next activity-potty">
+        <div class="timeline-time">2:15 PM</div>
+        <div class="timeline-content">
+          <div class="timeline-title">Potty Break + Short Play</div>
+        </div>
+      </div>
+      
+      <div class="timeline-item activity-training">
+        <div class="timeline-time">3:00 PM</div>
+        <div class="timeline-content">
+          <div class="timeline-title">Training Session (5 min)</div>
+        </div>
+      </div>
+      
+      <div class="timeline-item activity-rest">
+        <div class="timeline-time">3:30 PM</div>
+        <div class="timeline-content">
+          <div class="timeline-title">Crate Rest (90 min)</div>
+        </div>
+      </div>
+      
+      <div class="timeline-item activity-potty">
+        <div class="timeline-time">5:00 PM</div>
+        <div class="timeline-content">
+          <div class="timeline-title">Potty + Playtime</div>
+        </div>
+      </div>
+      
+      <div class="timeline-item activity-meal">
+        <div class="timeline-time">6:00 PM</div>
+        <div class="timeline-content">
+          <div class="timeline-title">Dinner (Hand-Fed)</div>
+        </div>
+      </div>
+      
+      <div class="timeline-item activity-play">
+        <div class="timeline-time">7:00 PM</div>
+        <div class="timeline-content">
+          <div class="timeline-title">Family Time + Gentle Handling</div>
+        </div>
+      </div>
+      
+      <div class="timeline-item activity-potty">
+        <div class="timeline-time">8:30 PM</div>
+        <div class="timeline-content">
+          <div class="timeline-title">Final Potty + Wind Down</div>
+        </div>
+      </div>
+      
+      <div class="timeline-item activity-rest">
+        <div class="timeline-time">9:30 PM</div>
+        <div class="timeline-content">
+          <div class="timeline-title">Bedtime in Crate</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Simple app functionality for demonstration
+    document.addEventListener('DOMContentLoaded', function() {
+      const generateBtn = document.getElementById('generate-btn');
+      const questionnaire = document.getElementById('questionnaire');
+      const nextAction = document.getElementById('next-action');
+      const timeline = document.getElementById('timeline');
+      const completeBtn = document.querySelector('.complete-btn');
+      
+      // Generate schedule button
+      generateBtn.addEventListener('click', function() {
+        questionnaire.classList.add('hidden');
+        nextAction.classList.remove('hidden');
+        timeline.classList.remove('hidden');
+        
+        // In a real app, this would generate a schedule based on inputs
+        // and current time, but for demo we just show the static content
+      });
+      
+      // Complete action button
+      completeBtn.addEventListener('click', function() {
+        // In a real app, this would mark the action complete and update
+        // the next action and timeline
+        alert('Activity completed! The next activity would now be shown.');
+      });
+      
+      // Make timeline items clickable to show details
+      const timelineItems = document.querySelectorAll('.timeline-item');
+      timelineItems.forEach(item => {
+        item.addEventListener('click', function() {
+          // Get the activity type from the class
+          let activityType = '';
+          if (this.classList.contains('activity-rest')) activityType = 'Rest';
+          else if (this.classList.contains('activity-training')) activityType = 'Training';
+          else if (this.classList.contains('activity-potty')) activityType = 'Potty';
+          else if (this.classList.contains('activity-play')) activityType = 'Play';
+          else if (this.classList.contains('activity-meal')) activityType = 'Meal';
+          
+          const activity = this.querySelector('.timeline-title').textContent;
+          alert(`${activityType}: ${activity}\n\nThis would show activity-specific tips and information.`);
+        });
+      });
+    });
+  </script>
+</body>
+</html>

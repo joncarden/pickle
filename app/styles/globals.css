@@ -1,0 +1,64 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary: #4a90e2;
+  --secondary: #f5a623;
+  --success: #7ed321;
+  --danger: #d0021b;
+  --light: #f8f9fa;
+  --dark: #333333;
+  --gray: #9b9b9b;
+  --white: #ffffff;
+}
+
+body {
+  @apply bg-light text-dark;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+}
+
+.container {
+  @apply max-w-2xl mx-auto px-4;
+}
+
+.card {
+  @apply bg-white rounded-xl shadow-sm p-6 mb-6;
+}
+
+.btn {
+  @apply w-full py-3 px-4 rounded-lg font-semibold cursor-pointer transition-opacity;
+}
+
+.btn-primary {
+  @apply bg-primary text-white;
+}
+
+.btn-secondary {
+  @apply bg-white text-primary;
+}
+
+.form-group {
+  @apply mb-5;
+}
+
+.form-label {
+  @apply block mb-2 font-medium;
+}
+
+.toggle-group {
+  @apply flex bg-gray-100 rounded-lg overflow-hidden;
+}
+
+.toggle-option {
+  @apply flex-1 text-center py-3 cursor-pointer transition-colors;
+}
+
+.toggle-option.active {
+  @apply bg-primary text-white;
+}
+
+.toggle-input {
+  @apply hidden;
+} 
